@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Oi, amor...</title>
+<style>
+:root{
+  color-scheme: light;
+  --bg:#b9b9b9; --panel:#dcdcdc; --panel-in:#e9e9e9; --text:#2b2b2b;
+  --pink:#ff4fa3; --pink-d:#c21f72; --pink-l:#ffb3d9; --edge:#7a7a7a;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --bg:#2a2a2a; --panel:#3a3a3a; --panel-in:#444; --text:#f1f1f1;
+    --pink:#ff6bb5; --pink-d:#ff2f94; --pink-l:#ffc2e2; --edge:#101010;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --bg:#2a2a2a; --panel:#3a3a3a; --panel-in:#444; --text:#f1f1f1;
+  --pink:#ff6bb5; --pink-d:#ff2f94; --pink-l:#ffc2e2; --edge:#101010;
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{
+  margin:0;height:100%;background:var(--bg);color:var(--text);
+  font-family:Tahoma,"Trebuchet MS",Verdana,sans-serif;
+  display:flex;align-items:center;justify-content:center;
+  padding:16px;overflow:hidden;touch-action:manipulation;
+  -webkit-user-select:none;user-select:none;
+}
+.win{
+  width:100%;max-width:440px;background:var(--panel);
+  border:2px solid var(--pink-d);border-radius:10px 10px 4px 4px;
+  box-shadow:4px 4px 0 rgba(0,0,0,.35);overflow:hidden;
+}
+.title{
+  display:flex;align-items:center;gap:8px;padding:6px 8px;color:#fff;font-weight:700;font-size:15px;
+  background:linear-gradient(#ff9ccf 0%,var(--pink) 45%,var(--pink-d) 100%);
+  text-shadow:1px 1px 0 rgba(0,0,0,.4);
+}
+.title span.t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb{display:flex;gap:3px}
+.tb i{
+  width:22px;height:22px;border:1px solid #fff;border-radius:4px;display:grid;place-items:center;
+  font-style:normal;font-size:12px;line-height:1;background:linear-gradient(#ffd0e8,var(--pink));
+}
+.tb i:last-child{background:linear-gradient(#ff9a8a,#d8301f)}
+.body{padding:22px 18px 18px;background:var(--panel-in);margin:6px;border:2px inset var(--edge);text-align:center}
+.emoji{font-size:44px;line-height:1}
+h1{margin:10px 0 20px;font-size:clamp(20px,6vw,26px);color:var(--pink-d);text-shadow:1px 1px 0 rgba(255,255,255,.5)}
+.row{display:flex;gap:14px;justify-content:center;align-items:center}
+.slot{min-width:110px;min-height:44px;display:flex;align-items:center;justify-content:center}
+.btn{
+  min-width:110px;min-height:44px;padding:8px 20px;font:700 17px Tahoma,"Trebuchet MS",Verdana,sans-serif;
+  color:#fff;text-shadow:1px 1px 0 rgba(0,0,0,.35);cursor:pointer;
+  background:linear-gradient(#ffc2e2 0%,var(--pink) 50%,var(--pink-d) 100%);
+  border:2px solid var(--pink-d);border-radius:8px;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),2px 2px 0 rgba(0,0,0,.3);
+  touch-action:none;
+}
+.btn:active{box-shadow:inset 0 2px 4px rgba(0,0,0,.4);transform:translateY(1px)}
+.btn.no{background:linear-gradient(#f2f2f2,#bdbdbd);color:var(--pink-d);border-color:var(--edge);text-shadow:none}
+.btn.no.free{position:fixed;z-index:50;margin:0;transition:left .25s ease,top .25s ease}
+.status{display:flex;justify-content:space-between;gap:8px;padding:4px 8px;font-size:12px;border-top:1px solid var(--edge);background:var(--panel)}
+.overlay{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.45)}
+.overlay.on{display:flex}
+.overlay .win{animation:pop .3s ease}
+.love{font-size:clamp(28px,9vw,40px);font-weight:700;color:var(--pink-d);margin:8px 0 14px;text-shadow:1px 1px 0 rgba(255,255,255,.5)}
+.hearts span{position:fixed;bottom:-30px;font-size:26px;animation:up 4s linear forwards;pointer-events:none;z-index:101}
+@keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes up{to{transform:translateY(-110vh) rotate(25deg);opacity:.2}}
+</style>
+</head>
+<body>
+<main class="win" id="main">
+  <div class="title"><span>💗</span><span class="t">Mensagem.exe</span><div class="tb"><i>–</i><i>□</i><i>✕</i></div></div>
+  <div class="body">
+    <div class="emoji">🥺</div>
+    <h1>Oi, amor... Me desculpa?</h1>
+    <div class="row">
+      <button class="btn" id="yes">SIM</button>
+      <div class="slot" id="slot"><button class="btn no" id="no">NÃO</button></div>
+    </div>
+  </div>
+  <div class="status"><span id="msg">Aguardando resposta...</span><span id="cnt">Nãos: 0</span></div>
+</main>
+
+<div class="overlay" id="love">
+  <div class="win" style="max-width:380px">
+    <div class="title"><span>💖</span><span class="t">Resposta.exe</span><div class="tb"><i>✕</i></div></div>
+    <div class="body">
+      <div class="emoji">😍</div>
+      <div class="love">TE AMO, AMOR ❤</div>
+      <button class="btn" id="close">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var no=$('#no'),yes=$('#yes'),msg=$('#msg'),cnt=$('#cnt'),love=$('#love');
+  var tries=0,free=false,LIMIT=3;
+  var texts=['Tem certeza?','Pensa bem...','Esse botão está com medo!','Agora ele foge!','Vai, aperta o SIM 🥹','Não vai conseguir!'];
+
+  function overlap(a,b){return !(a.right<b.left||a.left>b.right||a.bottom<b.top||a.top>b.bottom)}
+
+  function place(px,py){
+    var w=no.offsetWidth,h=no.offsetHeight,m=10,W=innerWidth,H=innerHeight;
+    var yr=yes.getBoundingClientRect(),x=m,y=m;
+    for(var i=0;i<60;i++){
+      x=m+Math.random()*Math.max(0,W-w-2*m);
+      y=m+Math.random()*Math.max(0,H-h-2*m);
+      var r={left:x-6,top:y-6,right:x+w+6,bottom:y+h+6};
+      var far=px==null||Math.hypot(x+w/2-px,y+h/2-py)>Math.min(160,W/2);
+      if(!overlap(r,yr)&&far)break;
+    }
+    no.style.left=x+'px';no.style.top=y+'px';
+  }
+
+  function release(){
+    if(free)return;
+    var r=no.getBoundingClientRect();
+    no.style.left=r.left+'px';no.style.top=r.top+'px';
+    no.classList.add('free');free=true;
+    void no.offsetWidth;
+  }
+
+  function flee(px,py){
+    release();place(px,py);
+  }
+
+  function count(){
+    tries++;cnt.textContent='Nãos: '+tries;
+    msg.textContent=texts[Math.min(tries-1,texts.length-1)];
+  }
+
+  no.addEventListener('pointerdown',function(e){
+    e.preventDefault();count();flee(e.clientX,e.clientY);
+  });
+  no.addEventListener('click',function(e){
+    if(e.detail===0){count();flee();} // teclado
+  });
+
+  function near(e){
+    if(!free||tries<LIMIT)return;
+    var r=no.getBoundingClientRect();
+    var d=Math.hypot(e.clientX-(r.left+r.width/2),e.clientY-(r.top+r.height/2));
+    if(d<Math.max(r.width,r.height)/2+60)flee(e.clientX,e.clientY);
+  }
+  document.addEventListener('pointermove',near);
+  document.addEventListener('pointerdown',near);
+
+  addEventListener('resize',function(){if(free)place()});
+
+  function hearts(){
+    for(var i=0;i<18;i++){
+      (function(i){setTimeout(function(){
+        var s=document.createElement('span');
+        s.textContent=['💗','💖','💕','❤️'][i%4];
+        s.style.left=Math.random()*95+'vw';
+        document.body.appendChild(s);
+        setTimeout(function(){s.remove()},4200);
+      },i*150)})(i);
+    }
+  }
+
+  yes.addEventListener('click',function(){
+    love.classList.add('on');
+    no.style.visibility='hidden';
+    msg.textContent='Perdoado com sucesso!';
+    hearts();
+  });
+  $('#close').addEventListener('click',function(){love.classList.remove('on')});
+})();
+</script>
+</body>
+</html>
